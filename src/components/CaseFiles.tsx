@@ -107,7 +107,7 @@ export default function CaseFiles() {
       if (!running) return;
       const room = section.offsetHeight - window.innerHeight;
       const target = room > 4 ? clamp01(-section.getBoundingClientRect().top / room) : 0;
-      sp += (target - sp) * 0.12;
+      sp += (target - sp) * 0.06;
       // vertical scroll becomes sideways travel: the strip pans, nothing fades
       const span = Math.max(0, track.scrollWidth - window.innerWidth);
       const x = sp * span;
@@ -149,7 +149,7 @@ export default function CaseFiles() {
         gsap.fromTo(
           cards.map((c) => c.firstElementChild),
           { rotationY: 76, opacity: 0, transformOrigin: "left center" },
-          { rotationY: 0, opacity: 1, duration: 1.05, stagger: 0.13, ease: "power3.out" }
+          { rotationY: 0, opacity: 1, duration: 1.3, stagger: 0.22, ease: "power3.out" }
         );
       },
       { threshold: 0.2 }

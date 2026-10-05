@@ -36,8 +36,8 @@ export default function ScrollRig() {
             y: 0,
             opacity: 1,
             filter: "blur(0px)",
-            duration: 0.7,
-            stagger: 0.028,
+            duration: 1.0,
+            stagger: 0.05,
             ease: "power3.out",
             scrollTrigger: { trigger: el, start: "top 85%", once: true },
           }
@@ -50,7 +50,7 @@ export default function ScrollRig() {
         gsap.to(wrap, {
           y: -90,
           ease: "none",
-          scrollTrigger: { trigger: wrap.closest(".exp-panel"), start: "top top", end: "bottom top", scrub: true },
+          scrollTrigger: { trigger: wrap.closest(".exp-panel"), start: "top top", end: "bottom top", scrub: 1 },
         });
       });
       // finale poster: the giant type rides the pin, then zooms past the lens and blacks out
@@ -67,7 +67,7 @@ export default function ScrollRig() {
               trigger: el.closest("section") ?? el,
               start: "top top",
               end: "bottom bottom",
-              scrub: 0.5,
+              scrub: 1,
             },
           }
         );
@@ -79,7 +79,7 @@ export default function ScrollRig() {
           {
             y: -70,
             ease: "none",
-            scrollTrigger: { trigger: cap.closest("section") ?? cap, start: "top bottom", end: "bottom top", scrub: true },
+            scrollTrigger: { trigger: cap.closest("section") ?? cap, start: "top bottom", end: "bottom top", scrub: 0.8 },
           }
         );
       });

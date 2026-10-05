@@ -155,7 +155,7 @@ export default function Stage3D() {
       last = now;
       wake = Math.min(1, wake + dt / 1.6); // staged blackout lift
       const time = (now - t0) / 1000;
-      warp = Math.max(0, warp - dt * 1.7);
+      warp = Math.max(0, warp - dt * 1.05);
 
       const ch = chapter();
       const drift = Math.sin(time * 0.11) * 2; // idle cameras are never perfectly still

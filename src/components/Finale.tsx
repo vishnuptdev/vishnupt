@@ -102,8 +102,8 @@ export default function Finale() {
     return () => io.disconnect();
   }, []);
 
-  // anime.js: the credit rows are the closing titles — they slide in off-frame right on an
-  // outExpo stagger the first time the room lights, 110ms apart. Time-based, once, no scrub.
+  // anime.js: the credit rows are the closing titles — they slide in off-frame right on a
+  // stagger the first time the room lights, 160ms apart. Time-based, once, no scrub.
   useEffect(() => {
     const sec = secRef.current;
     if (!sec || reduced) return;
@@ -116,8 +116,8 @@ export default function Finale() {
         animate(rows, {
           translateX: [80, 0],
           opacity: [0, 1],
-          duration: 950,
-          delay: stagger(110),
+          duration: 1200,
+          delay: stagger(160),
           ease: "outExpo",
         });
       },
@@ -205,9 +205,11 @@ export default function Finale() {
           </div>
         </div>
 
-        {/* frame two — the end card: form, next steps, education credits */}
+        {/* frame two — the end card: form, next steps, education credits. Its own sky:
+            a sonar sweep over range rings — chapter 07 is called ping, so the room pings. */}
         <div className="fin-f2 absolute inset-0 z-20 overflow-y-auto">
-          <div className="mx-auto grid min-h-full w-full max-w-5xl content-center gap-10 px-8 py-10 md:grid-cols-[1fr_1.05fr] md:gap-14 sm:px-12">
+          <span aria-hidden className="fx fx-radar" />
+          <div className="relative mx-auto grid min-h-full w-full max-w-5xl content-center gap-10 px-8 py-10 md:grid-cols-[1fr_1.05fr] md:gap-14 sm:px-12">
             <div>
               <p className="text-[11px] uppercase tracking-[0.45em] text-bone/55">what happens next</p>
               <ol className="mt-6 space-y-5">
@@ -225,7 +227,14 @@ export default function Finale() {
                   </li>
                 ))}
               </ol>
-              <p className="mt-8 text-[11px] text-bone/40">
+              <a
+                href="/resume.pdf"
+                download
+                className="mt-8 inline-block border border-bone/20 px-4 py-2 text-xs text-bone/70 transition-colors hover:border-amber hover:text-amber"
+              >
+                download r&eacute;sum&eacute; (pdf)
+              </a>
+              <p className="mt-6 text-[11px] text-bone/40">
                 {person.name} &middot; {person.location} &middot; {new Date().getFullYear()}
               </p>
             </div>

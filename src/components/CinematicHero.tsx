@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { animate, stagger } from "animejs";
-import Portrait from "./Portrait";
 import { person } from "../content";
 
 // Chapter 1 — the opening. Veil lifts → welcome strip → the wordmark materialises centre-out
@@ -146,22 +145,11 @@ export default function CinematicHero({ start }: { start: boolean }) {
           ))}
         </h1>
 
-        {/* the operator stands beside his own name: pixel-resolve entrance, duotone glass,
-            scan sweep forever, slow Ken Burns breath — the face opens the film */}
-        <motion.div
-          className="mt-8 flex flex-col items-center gap-6 md:flex-row md:gap-9"
-          {...up({ y: 14 }, 1.35, 0.7)}
-        >
-          <div className="portrait tilt w-32 shrink-0 sm:w-40">
-            <Portrait className="portrait-cv block aspect-[4/5] w-full" />
-            <span aria-hidden className="tint" />
-          </div>
-          <div className="text-center md:text-left">
-            <p className="text-xs uppercase tracking-[0.35em] text-bone/75">{person.name}</p>
-            <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-bone/50">
-              {person.role} &middot; {person.location}
-            </p>
-          </div>
+        <motion.div className="mt-8" {...up({ y: 14 }, 1.35, 0.7)}>
+          <p className="text-xs uppercase tracking-[0.35em] text-bone/75">{person.name}</p>
+          <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-bone/50">
+            {person.role} &middot; {person.location}
+          </p>
         </motion.div>
 
         {/* no invented tagline, no skill chips here — the resume sections start next chapter */}
@@ -179,6 +167,14 @@ export default function CinematicHero({ start }: { start: boolean }) {
             className="border border-bone/20 px-5 py-2 text-sm text-bone/70 transition-colors hover:border-bone/50 hover:text-bone"
           >
             the record
+          </a>
+          <a
+            href="/resume.pdf"
+            download
+            data-mag
+            className="border border-bone/20 px-5 py-2 text-sm text-bone/70 transition-colors hover:border-amber hover:text-amber"
+          >
+            download r&eacute;sum&eacute;
           </a>
         </motion.div>
       </motion.div>

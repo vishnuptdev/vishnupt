@@ -84,7 +84,7 @@ export default function Skills() {
       last = now;
       const room = section.offsetHeight - window.innerHeight;
       const target = room > 4 ? clamp01(-section.getBoundingClientRect().top / room) : 0;
-      sp += (target - sp) * 0.12;
+      sp += (target - sp) * 0.06;
       // the ticker prints at a constant speed toward wherever the scroll has reached
       const goal = sp * TOTAL;
       shown = Math.min(goal, shown + dt * 16);

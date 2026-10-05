@@ -8,6 +8,8 @@ CLAUDE.md
 PROMPT.md
 scripts
 content
+tools
+.github
 Dockerfile
 .dockerignore
 *.log

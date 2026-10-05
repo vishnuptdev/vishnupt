@@ -24,6 +24,7 @@ export default function CinemaHUD() {
   const cutTopRef = useRef<HTMLSpanElement>(null);
   const cutBotRef = useRef<HTMLSpanElement>(null);
   const wipeRef = useRef<HTMLSpanElement>(null);
+  const lastCut = useRef(0);
 
   useEffect(() => {
     const onScroll = () => {
@@ -36,19 +37,25 @@ export default function CinemaHUD() {
         if (r.top <= y && r.bottom > y) cur = s;
       }
       if (prev.current && prev.current !== cur.id && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        setCut((k) => k + 1);
-        // the black punch and the corridor warp fire together: cut = camera lunge
-        window.dispatchEvent(new Event("cine:warp"));
-        // gsap: the whole frame SLAMS shut and reopens — letterbox halves close over the
-        // cut while an amber/teal light wipe rakes across, then the new chapter is revealed
-        const t = cutTopRef.current;
-        const b = cutBotRef.current;
-        const w = wipeRef.current;
-        if (t && b && w) {
-          gsap.timeline()
-            .fromTo([t, b], { scaleY: 0 }, { scaleY: 1, duration: 0.16, ease: "power2.in" }, 0)
-            .fromTo(w, { x: "-45vw" }, { x: "115vw", duration: 0.6, ease: "power2.inOut" }, 0.06)
-            .to([t, b], { scaleY: 0, duration: 0.44, ease: "power2.out" }, 0.36);
+        // throttled: a fast flick across several chapters must not machine-gun the slam —
+        // one cut effect at a time, at least 1.2s apart, and it plays slow enough to watch
+        const now = performance.now();
+        if (now - lastCut.current > 1200) {
+          lastCut.current = now;
+          setCut((k) => k + 1);
+          // the black punch and the corridor warp fire together: cut = camera lunge
+          window.dispatchEvent(new Event("cine:warp"));
+          // gsap: the letterbox halves close over the cut while an amber/teal light wipe
+          // rakes across, then the new chapter is revealed — a deliberate cut, not a glitch
+          const t = cutTopRef.current;
+          const b = cutBotRef.current;
+          const w = wipeRef.current;
+          if (t && b && w) {
+            gsap.timeline()
+              .fromTo([t, b], { scaleY: 0 }, { scaleY: 1, duration: 0.28, ease: "power2.in" }, 0)
+              .fromTo(w, { x: "-45vw" }, { x: "115vw", duration: 0.9, ease: "power2.inOut" }, 0.1)
+              .to([t, b], { scaleY: 0, duration: 0.7, ease: "power2.out" }, 0.55);
+          }
         }
       }
       prev.current = cur.id;
