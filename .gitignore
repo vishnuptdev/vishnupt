@@ -1,0 +1,21 @@
+# deps + build output
+node_modules/
+dist/
+*.tsbuildinfo
+
+# env / secrets
+.env
+.env.*
+*.local
+
+# AI / agent workspace — never committed
+.claude/
+CLAUDE.md
+PROMPT.md
+scripts/
+
+# editor / os cruft
+.vscode/
+.DS_Store
+Thumbs.db
+*.log

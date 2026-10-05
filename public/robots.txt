@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+# TODO: replace the placeholder domain below with the deployed one
+Sitemap: https://REPLACE-WITH-DEPLOYED-DOMAIN/sitemap.xml

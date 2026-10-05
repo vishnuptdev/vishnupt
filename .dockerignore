@@ -1,0 +1,13 @@
+node_modules
+dist
+.git
+# agent/workspace files must never enter the build context
+.claude
+.vscode
+CLAUDE.md
+PROMPT.md
+scripts
+content
+Dockerfile
+.dockerignore
+*.log

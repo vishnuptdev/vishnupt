@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>404 — route not found</title>
+    <style>
+      body {
+        background: #0e1013;
+        color: #e8e4da;
+        font-family: ui-monospace, "JetBrains Mono", monospace;
+        display: grid;
+        place-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+      a {
+        color: #ffb020;
+      }
+      p {
+        color: rgba(232, 228, 218, 0.6);
+      }
+    </style>
+  </head>
+  <body>
+    <main style="text-align: center">
+      <h1>404 — route not found</h1>
+      <p>this console is a single page; there is nothing at this path.</p>
+      <p><a href="/">GET / → back to the control room</a></p>
+    </main>
+    <script>
+      // Hash links (#services-map etc.) are not affected; bare wrong paths go home.
+      if (location.pathname !== "/") location.replace("/" + location.hash);
+    </script>
+  </body>
+</html>
