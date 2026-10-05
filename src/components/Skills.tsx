@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import gsap from "gsap";
 import { skillGroups } from "../content";
@@ -48,6 +48,8 @@ const TOTAL = TOKENS.length;
 
 export default function Skills() {
   const reduced = useReducedMotion();
+  // code rain is desktop eye-candy: 34 animated columns are wasted frames on a phone
+  const [phone] = useState(() => window.matchMedia("(max-width: 767px)").matches);
   const secRef = useRef<HTMLElement>(null);
   const pinRef = useRef<HTMLDivElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -66,9 +68,17 @@ export default function Skills() {
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
       window.matchMedia("(max-width: 767px)").matches;
     if (flat) {
+      // phone/reduced: no pin, no 520svh scroll room, no clipping — the whole log is
+      // already printed and the section hugs its content
       pin.style.position = "static";
       pin.style.height = "auto";
+      pin.style.minHeight = "100svh";
+      section.style.height = "auto";
+      body.style.maxHeight = "none";
+      body.style.overflow = "visible";
       toks.forEach((el) => el.classList.add("on"));
+      if (barRef.current) barRef.current.style.width = "100%";
+      if (cntRef.current) cntRef.current.textContent = `${TOTAL}/${TOTAL}`;
       return;
     }
 
@@ -84,7 +94,7 @@ export default function Skills() {
       last = now;
       const room = section.offsetHeight - window.innerHeight;
       const target = room > 4 ? clamp01(-section.getBoundingClientRect().top / room) : 0;
-      sp += (target - sp) * 0.06;
+      sp += (target - sp) * 0.1;
       // the ticker prints at a constant speed toward wherever the scroll has reached
       const goal = sp * TOTAL;
       shown = Math.min(goal, shown + dt * 16);
@@ -151,7 +161,7 @@ export default function Skills() {
   return (
     <section id="skills" ref={secRef} aria-label="Core skills" className="relative h-[520svh] scroll-mt-20">
       <div ref={pinRef} className="tilt-scene sticky top-0 flex h-screen items-center justify-center overflow-hidden px-4">
-        {!reduced && <Rain />}
+        {!reduced && !phone && <Rain />}
         <div ref={dropRef} className="tilt-scene relative z-10 w-full max-w-3xl">
         <div className="crt tilt w-full border border-bone/12 bg-[rgb(8_9_12_/_0.66)] shadow-[0_40px_120px_-40px_rgb(0_0_0/_0.9)] backdrop-blur-md">
           <div className="flex items-center gap-2 border-b border-bone/10 px-4 py-2.5">

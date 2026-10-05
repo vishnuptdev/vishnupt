@@ -9,9 +9,11 @@ import { person } from "../content";
 // Beats overlap on purpose: a queue of fades reads as UI, overlapping beats read as cinema.
 // All entrances are TIME-based (never scroll-based) so flicks can't skip or smear the moment.
 
-const WORD = "VISHNU".split("");
-// reveal rank: centre letters first, outward
-const RANK = WORD.map((_, i) => Math.abs(i - (WORD.length - 1) / 2));
+// the wordmark is the full name — written once, no duplicate name line under it.
+// The given name burns amber; the reveal reads left to right across all three words.
+const NAME_WORDS = person.name.toUpperCase().split(" ");
+const WORD_AT = NAME_WORDS.map((_, w) => NAME_WORDS.slice(0, w).reduce((n, x) => n + x.length, 0));
+const HL = NAME_WORDS[0].length;
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export default function CinematicHero({ start }: { start: boolean }) {
@@ -27,7 +29,7 @@ export default function CinematicHero({ start }: { start: boolean }) {
     const host = ref.current;
     const h1 = wordRef.current;
     if (!host || !h1 || reduced || settled) return;
-    const spans = [...h1.querySelectorAll<HTMLSpanElement>(":scope > span")];
+    const spans = [...h1.querySelectorAll<HTMLSpanElement>(".hw-ch")];
     const cx = (spans.length - 1) / 2;
     const depths = spans.map((_, i) => 0.35 + (Math.abs(i - cx) / cx) * 0.9);
     let px = 0;
@@ -76,7 +78,7 @@ export default function CinematicHero({ start }: { start: boolean }) {
   useEffect(() => {
     const h1 = wordRef.current;
     if (!h1 || reduced || settled) return;
-    const spans = [...h1.querySelectorAll<HTMLElement>(":scope > span")];
+    const spans = [...h1.querySelectorAll<HTMLElement>(".hw-ch")];
     const go = () =>
       animate(spans, { translateY: [-16, 0], duration: 900, delay: stagger(45), ease: "outElastic" });
     let on = false;
@@ -131,23 +133,34 @@ export default function CinematicHero({ start }: { start: boolean }) {
           welcome to my control room
         </motion.p>
 
-        <h1 ref={wordRef} className="hero-word mt-6 flex font-display text-[19vw] leading-[0.85] sm:text-[14vw] lg:text-[11rem]" aria-label="Vishnu">
-          {WORD.map((ch, i) => (
-            <motion.span
-              key={i}
-              className="inline-block"
-              initial={settled ? false : { opacity: 0, y: "34%", filter: "blur(20px)" }}
-              animate={settled ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 1.15, delay: live ? 0.35 + RANK[i] * 0.22 : 0, ease: EASE }}
-            >
-              {i === 4 ? <span className="text-amber">N</span> : ch}
-            </motion.span>
+        <h1
+          ref={wordRef}
+          className="hero-word mt-6 flex flex-wrap justify-center gap-x-[0.28em] font-display text-[9.2vw] leading-[0.95] sm:text-[6vw] lg:text-[5.2rem]"
+          aria-label={person.name}
+        >
+          {NAME_WORDS.map((word, wi) => (
+            <span key={word} className="flex whitespace-nowrap">
+              {word.split("").map((ch, ci) => {
+                const i = WORD_AT[wi] + ci;
+                return (
+                  <motion.span
+                    key={i}
+                    className="hw-ch inline-block"
+                    initial={settled ? false : { opacity: 0, y: "34%", filter: "blur(20px)" }}
+                    animate={settled ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
+                    transition={{ duration: 1.15, delay: live ? 0.35 + i * 0.055 : 0, ease: EASE }}
+                  >
+                    {i < HL ? <span className="text-amber">{ch}</span> : ch}
+                  </motion.span>
+                );
+              })}
+            </span>
           ))}
         </h1>
 
+        {/* the wordmark already says the full name — here only the role and the city */}
         <motion.div className="mt-8" {...up({ y: 14 }, 1.35, 0.7)}>
-          <p className="text-xs uppercase tracking-[0.35em] text-bone/75">{person.name}</p>
-          <p className="mt-2 text-[11px] uppercase tracking-[0.3em] text-bone/50">
+          <p className="text-xs uppercase tracking-[0.35em] text-bone/75">
             {person.role} &middot; {person.location}
           </p>
         </motion.div>

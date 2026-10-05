@@ -80,15 +80,15 @@ export default function Chrono() {
               // decode the title + org out of glyphs the moment the slab lands
               const t = el.querySelector<HTMLElement>("h3");
               const o = el.querySelector<HTMLElement>(".exp-org");
-              if (t) scramble(t, 1100);
-              if (o) scramble(o, 1300);
+              if (t) scramble(t, 700);
+              if (o) scramble(o, 850);
               // anime.js: the role title settles — from 1.45× and a soft blur, easing in slow
               // while the glyphs decode underneath. Big type, but readable the whole way down.
               if (t)
                 animate(t, {
-                  scale: [1.45, 1],
-                  filter: ["blur(10px)", "blur(0px)"],
-                  duration: 1100,
+                  scale: [1.28, 1],
+                  filter: ["blur(8px)", "blur(0px)"],
+                  duration: 900,
                   ease: "outCubic",
                 });
             }

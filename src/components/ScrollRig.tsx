@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Lenis from "lenis";
 
 // GSAP ScrollTrigger rig — the scroll-scrubbed depth layer of the film:
 //  - [data-split] kickers decode in as letter staggers the first time they enter frame
@@ -12,6 +13,22 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 export default function ScrollRig() {
+  // Lenis: the whole page glides — wheel input is interpolated instead of jumped, so every
+  // chapter, pin and caption is read at speed, not flicked past. Anchor links ride it too.
+  // Reduced motion keeps native scrolling.
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const lenis = new Lenis({ duration: 1.15, smoothWheel: true, anchors: true });
+    lenis.on("scroll", ScrollTrigger.update);
+    const raf = (time: number) => lenis.raf(time * 1000);
+    gsap.ticker.add(raf);
+    gsap.ticker.lagSmoothing(0);
+    return () => {
+      gsap.ticker.remove(raf);
+      lenis.destroy();
+    };
+  }, []);
+
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const wide = window.matchMedia("(min-width: 768px)").matches;
@@ -36,8 +53,8 @@ export default function ScrollRig() {
             y: 0,
             opacity: 1,
             filter: "blur(0px)",
-            duration: 1.0,
-            stagger: 0.05,
+            duration: 0.85,
+            stagger: 0.038,
             ease: "power3.out",
             scrollTrigger: { trigger: el, start: "top 85%", once: true },
           }
@@ -50,7 +67,7 @@ export default function ScrollRig() {
         gsap.to(wrap, {
           y: -90,
           ease: "none",
-          scrollTrigger: { trigger: wrap.closest(".exp-panel"), start: "top top", end: "bottom top", scrub: 1 },
+          scrollTrigger: { trigger: wrap.closest(".exp-panel"), start: "top top", end: "bottom top", scrub: 0.6 },
         });
       });
       // finale poster: the giant type rides the pin, then zooms past the lens and blacks out
@@ -67,7 +84,7 @@ export default function ScrollRig() {
               trigger: el.closest("section") ?? el,
               start: "top top",
               end: "bottom bottom",
-              scrub: 1,
+              scrub: 0.6,
             },
           }
         );
@@ -79,7 +96,7 @@ export default function ScrollRig() {
           {
             y: -70,
             ease: "none",
-            scrollTrigger: { trigger: cap.closest("section") ?? cap, start: "top bottom", end: "bottom top", scrub: 0.8 },
+            scrollTrigger: { trigger: cap.closest("section") ?? cap, start: "top bottom", end: "bottom top", scrub: 0.5 },
           }
         );
       });

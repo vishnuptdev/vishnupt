@@ -107,7 +107,10 @@ export default function CaseFiles() {
       if (!running) return;
       const room = section.offsetHeight - window.innerHeight;
       const target = room > 4 ? clamp01(-section.getBoundingClientRect().top / room) : 0;
-      sp += (target - sp) * 0.06;
+      // adaptive damping: silky on small moves, catches up fast on big flicks so the
+      // strip never trails behind the scroll when the chapter hands over
+      sp += (target - sp) * (Math.abs(target - sp) > 0.25 ? 0.18 : 0.09);
+      if (target === 1) sp = 1;
       // vertical scroll becomes sideways travel: the strip pans, nothing fades
       const span = Math.max(0, track.scrollWidth - window.innerWidth);
       const x = sp * span;
@@ -149,7 +152,7 @@ export default function CaseFiles() {
         gsap.fromTo(
           cards.map((c) => c.firstElementChild),
           { rotationY: 76, opacity: 0, transformOrigin: "left center" },
-          { rotationY: 0, opacity: 1, duration: 1.3, stagger: 0.22, ease: "power3.out" }
+          { rotationY: 0, opacity: 1, duration: 1.1, stagger: 0.17, ease: "power3.out" }
         );
       },
       { threshold: 0.2 }
@@ -172,10 +175,11 @@ export default function CaseFiles() {
       id="cases"
       ref={secRef}
       aria-label="Personal projects"
-      className="relative h-[420svh] scroll-mt-20"
+      className="relative h-[560svh] scroll-mt-20"
     >
       {/* invisible anchor spine — native in-page links land where that file is centred.
-          offset = i/(n-1) * (420svh - 100svh) */}
+          offset = i/(n-1) * (560svh - 100svh). The extra scroll room is deliberate: every
+          dossier must be readable at centre frame before the strip pans it away. */}
       {projects.map((p, i) => (
         <span
           key={p.slug}
@@ -183,7 +187,7 @@ export default function CaseFiles() {
           aria-hidden
           data-spine
           className="pointer-events-none absolute left-0 h-px w-px"
-          style={{ top: `calc(${((i / (projects.length - 1)) * 320).toFixed(1)}vh + 2px)` }}
+          style={{ top: `calc(${((i / (projects.length - 1)) * 460).toFixed(1)}vh + 2px)` }}
         />
       ))}
       <div ref={pinRef} className="tilt-scene sticky top-0 h-screen overflow-hidden">

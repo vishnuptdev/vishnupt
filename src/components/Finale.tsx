@@ -116,8 +116,8 @@ export default function Finale() {
         animate(rows, {
           translateX: [80, 0],
           opacity: [0, 1],
-          duration: 1200,
-          delay: stagger(160),
+          duration: 1000,
+          delay: stagger(130),
           ease: "outExpo",
         });
       },

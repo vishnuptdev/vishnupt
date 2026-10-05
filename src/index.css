@@ -19,6 +19,22 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Lenis smooth-scroll: required base styles — native smooth behaviour off while Lenis
+   drives, nested scrollers (terminal log, contact panel) keep their own overflow. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
 body {
   background: var(--color-graphite);
   color: var(--color-bone);
@@ -325,14 +341,14 @@ html.is-booting body {
   z-index: 95;
   background: #050608;
   pointer-events: none;
-  animation: cine-snap 0.75s ease-out both;
+  animation: cine-snap 0.5s ease-out both;
 }
 @keyframes cine-snap {
   0% {
     opacity: 0;
   }
-  34% {
-    opacity: 0.8;
+  30% {
+    opacity: 0.5;
   }
   100% {
     opacity: 0;
@@ -544,8 +560,8 @@ html.is-booting body {
 .exp-r {
   opacity: 0;
   transition:
-    opacity 1s ease,
-    transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity 0.8s ease,
+    transform 0.95s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .exp-l {
   transform: translateX(-6vw);
@@ -622,7 +638,7 @@ html.is-booting body {
 /* bullets rise out of their own line mask, staggered — type surfacing, not sliding in */
 #experience .xb {
   opacity: 0;
-  transition: opacity 0.6s ease;
+  transition: opacity 0.45s ease;
 }
 #experience .is-on .xb {
   opacity: 1;
@@ -634,27 +650,27 @@ html.is-booting body {
 .xbi {
   display: block;
   transform: translateY(115%);
-  /* reading speed: a full second per line, quarter-second air between lines */
-  transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+  /* readable but alive: 0.8s per line, 0.18s of air between lines */
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 #experience .is-on .xbi {
   transform: none;
 }
 #experience .is-on .xb:nth-child(2),
 #experience .is-on .xb:nth-child(2) .xbi {
-  transition-delay: 0.25s;
+  transition-delay: 0.18s;
 }
 #experience .is-on .xb:nth-child(3),
 #experience .is-on .xb:nth-child(3) .xbi {
-  transition-delay: 0.5s;
+  transition-delay: 0.36s;
 }
 #experience .is-on .xb:nth-child(4),
 #experience .is-on .xb:nth-child(4) .xbi {
-  transition-delay: 0.75s;
+  transition-delay: 0.54s;
 }
 #experience .is-on .xb:nth-child(5),
 #experience .is-on .xb:nth-child(5) .xbi {
-  transition-delay: 1s;
+  transition-delay: 0.72s;
 }
 
 /* Projects: the side reel is a filmstrip — vertical scroll dollies sideways across the row of

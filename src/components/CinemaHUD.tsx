@@ -40,7 +40,7 @@ export default function CinemaHUD() {
         // throttled: a fast flick across several chapters must not machine-gun the slam —
         // one cut effect at a time, at least 1.2s apart, and it plays slow enough to watch
         const now = performance.now();
-        if (now - lastCut.current > 1200) {
+        if (now - lastCut.current > 900) {
           lastCut.current = now;
           setCut((k) => k + 1);
           // the black punch and the corridor warp fire together: cut = camera lunge
@@ -52,9 +52,9 @@ export default function CinemaHUD() {
           const w = wipeRef.current;
           if (t && b && w) {
             gsap.timeline()
-              .fromTo([t, b], { scaleY: 0 }, { scaleY: 1, duration: 0.28, ease: "power2.in" }, 0)
-              .fromTo(w, { x: "-45vw" }, { x: "115vw", duration: 0.9, ease: "power2.inOut" }, 0.1)
-              .to([t, b], { scaleY: 0, duration: 0.7, ease: "power2.out" }, 0.55);
+              .fromTo([t, b], { scaleY: 0 }, { scaleY: 1, duration: 0.22, ease: "power2.in" }, 0)
+              .fromTo(w, { x: "-45vw" }, { x: "115vw", duration: 0.7, ease: "power2.inOut" }, 0.08)
+              .to([t, b], { scaleY: 0, duration: 0.5, ease: "power2.out" }, 0.42);
           }
         }
       }

@@ -45,19 +45,11 @@ Two-stage image: Node 22 builds `dist/`, nginx:alpine serves it.
    typically an **A** record on the apex and **CNAME** `cname.vercel-dns.com` on `www`.
 3. Vercel issues the TLS certificate automatically once DNS resolves — usually minutes.
 
-### CI/CD (GitHub Actions)
+### CI/CD
 
-`.github/workflows/deploy.yml` runs the build on every push and PR, and deploys to the
-Vercel **production** environment on every push to `main`. One-time setup — add three
-repo secrets under **Settings → Secrets and variables → Actions**:
-
-| Secret | Where to get it |
-| --- | --- |
-| `VERCEL_TOKEN` | vercel.com → Account Settings → Tokens → create |
-| `VERCEL_ORG_ID` | run `npx vercel link` once locally, then read `.vercel/project.json` |
-| `VERCEL_PROJECT_ID` | same file |
-
-After that: `git push` to main → deployed automatically, nothing manual.
+The Vercel project is connected to the GitHub repo (Vercel GitHub app): every push to
+`main` builds and deploys to production automatically, every pull request gets its own
+preview URL. No actions or secrets needed.
 
 ## Stack
 

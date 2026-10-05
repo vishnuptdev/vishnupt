@@ -13,7 +13,7 @@ export default function Education() {
     initial: reduced ? false : { opacity: 0, y: 22, filter: "blur(8px)" },
     whileInView: reduced ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" },
     viewport: { once: true, amount: 0.6 },
-    transition: { duration: 1.1, delay: at, ease: [0.16, 1, 0.3, 1] as const },
+    transition: { duration: 0.9, delay: at, ease: [0.16, 1, 0.3, 1] as const },
   });
 
   return (
